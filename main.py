@@ -11,7 +11,7 @@ access_token = os.getenv('ACCESS_TOKEN')
 access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
 
 # Your pinned post ID
-MAIN_POST_ID = os.getenv(https://x.com/i/status/2008216553985396795)  # Railway variable
+MAIN_POST_ID = os.getenv()  # Railway variable
 
 client = tweepy.Client(
     bearer_token=bearer_token,
