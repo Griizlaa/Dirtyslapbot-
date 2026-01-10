@@ -11,14 +11,14 @@ access_token = os.getenv('ACCESS_TOKEN')
 access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
 
 # Your pinned post ID
-MAIN_POST_ID = os.getenv('MAIN_POST_ID')  # Railway variable
+MAIN_POST_ID = os.getenv(https://x.com/i/status/2008216553985396795)  # Railway variable
 
 client = tweepy.Client(
-    bearer_token=bearer_token,
-    consumer_key=consumer_key,
-    consumer_secret=consumer_secret,
-    access_token=access_token,
-    access_token_secret=access_token_secret,
+    bearer_token=AAAAAAAAAAAAAAAAAAAAAOkw6wEAAAAAGMXhWBn8osRvJn%2FKmRE2dGxSK8c%3DqHbsxXuxXjHwOGW9RQADsy9FnyKQ8B2nIat2zYiRzDNgUp29Bk
+    consumer_key=HXzUDMIs2tYexO2JxjGqFRFNm
+    consumer_secret=MyiVg1mcjNyzD4czVpezySAWVYlQzaFvcz73O8ueGiugHW6LJo
+    access_token=2008200518586552320-onV4kqxvH9vW2ipxqUlEybVRhaiWDT
+    access_token_secret=3LmBUEwNEgtyIZfMhmRt9pm71AW7ZOdpq3AF3hpsS4Kdw
     wait_on_rate_limit=True
 )
 
