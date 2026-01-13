@@ -4,13 +4,13 @@ import random
 import time
 import json
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 
 # ── CONFIG ──────────────────────────────────────────────────────────────
-BOT_USERNAME = "dirtyslapbot"  # Change if your bot handle is different
-COOLDOWN_SECONDS = 300  # 5 minutes cooldown per attacker-target pair
+BOT_USERNAME = "dirtyslapbot"          # Your bot's @username (lowercase)
+COOLDOWN_SECONDS = 300                 # 5 minutes cooldown per attacker-target
 
-# Tenor slap GIFs (10 links – add more anytime)
+# Tenor slap GIFs (10 high-quality, safe links)
 SLAP_GIFS = [
     "https://tenor.com/view/slap-hard-slap-gif-22345678",
     "https://tenor.com/view/will-smith-slap-chris-rock-gif-25141873",
@@ -72,10 +72,10 @@ def generate_nuclear_roast(target_username, attacker_username, bio_snippet="", p
     """
 
     payload = {
-        "model": "grok-4",          # or "grok-beta" / "grok-4.1-fast" – check console
+        "model": "grok-4",          # Change to available model in your console
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 1.0,
-        "max_tokens": 60            # forces short output
+        "max_tokens": 60            # Enforces short output
     }
 
     try:
@@ -85,14 +85,14 @@ def generate_nuclear_roast(target_username, attacker_username, bio_snippet="", p
         return roast
     except Exception as e:
         print("Grok API error:", e)
-        return f"@{target_username} just got obliterated into next week 💀🔥"  # fallback
+        return f"@{target_username} just got obliterated into next week 💀🔥"
 
 # ── MAIN LOOP ────────────────────────────────────────────────────────────
 print("Nuclear Slap Bot polling pure @user slap mentions...")
 
 while True:
     try:
-        # Search for any @mention + "slap" (pure trigger)
+        # Pure trigger: any tweet with "@someone slap"
         tweets = client.search_recent_tweets(
             query='"@* slap" -is:retweet lang:en',
             max_results=20,
@@ -123,12 +123,12 @@ while True:
             target_mention = mentions_entities[0]
             target_username = target_mention["username"]
 
-            # Skip if trying to slap the bot itself
+            # Skip self-slap
             if target_username.lower() == BOT_USERNAME.lower():
                 continue
 
-            # Cooldown check
-            now = datetime.utcnow()
+            # Cooldown check (UTC safe)
+            now = datetime.now(timezone.utc)
             cooldown_key = f"{author_id}_{target_username}"
             last_use_str = cooldowns.get(cooldown_key)
             if last_use_str:
@@ -141,10 +141,10 @@ while True:
             cooldowns[cooldown_key] = now.isoformat()
             save_cooldowns(cooldowns)
 
-            # Get target user info
+            # Get target info
             target_user = client.get_user(username=target_username, user_fields=["description", "profile_image_url"]).data
             bio_snippet = target_user.description[:60] if target_user.description else ""
-            pfp_desc = "unknown"  # add detection later if wanted
+            pfp_desc = "unknown"  # Add detection later if desired
 
             # Generate roast
             roast = generate_nuclear_roast(target_username, tweet.author.username, bio_snippet, pfp_desc)
